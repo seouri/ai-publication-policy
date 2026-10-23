@@ -1,4 +1,4 @@
-"""Render the AI policy cascade page from the YAML files in data/."""
+"""Render the AI Publication Policy page from the YAML files in data/."""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ SHELL_HEAD = f"""<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="{DESCRIPTION}">
-<meta property="og:title" content="AI Policy Cascade">
+<meta property="og:title" content="AI Publication Policy">
 <meta property="og:description" content="{DESCRIPTION}">
 <meta property="og:type" content="website">
 <style>

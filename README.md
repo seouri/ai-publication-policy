@@ -1,4 +1,4 @@
-# AI Policy Cascade
+# AI Publication Policy
 
 **Live site:** https://seouri.github.io/ai-publication-policy/
 
@@ -164,6 +164,6 @@ Corrections and additions are welcome, especially when a policy changes.
 ## License
 
 - **Code** (everything outside `data/`) is under the [MIT License](LICENSE).
-- **Data** (`data/*.yaml`) is under [CC BY 4.0](data/LICENSE). You can reuse and adapt it with attribution, for example: "AI Policy Cascade by Joon Lee, https://github.com/seouri/ai-publication-policy".
+- **Data** (`data/*.yaml`) is under [CC BY 4.0](data/LICENSE). You can reuse and adapt it with attribution, for example: "AI Publication Policy by Joon Lee, https://github.com/seouri/ai-publication-policy".
 
 Quoted policy wording belongs to the respective publishers and is reproduced in short excerpts for comment and comparison.
