@@ -5,3 +5,4 @@ __pycache__/
 dist/
 _site/
 sources/inbox/
+.DS_Store

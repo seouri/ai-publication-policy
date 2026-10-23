@@ -9,7 +9,7 @@ pages:
   why: Cloudflare challenge; Wayback copies stop at Jun 2026
 - url: https://www.cell.com/cell-reports-medicine/information-for-authors/journal-policies
   for: Cell Press
-  why: Cloudflare challenge; never archived
+  why: Cloudflare challenge; never archived; reader and archive routes also fail
 - url: https://www.cell.com/patterns/information-for-authors/journal-policies
   for: Cell Press
   why: Cloudflare challenge; never archived
@@ -34,16 +34,13 @@ pages:
 - url: https://amia.org/education-events/amia-2026-annual-symposium/call-participation
   for: AMIA Symposium
   why: Cloudflare challenge
-- url: https://amia.secure-platform.com/amplify
-  for: AMIA Amplify 2027
-  why: Login required (401)
 - url: https://www.acm.org/publications/policies/new-acm-policy-on-authorship
   for: ACM
   why: Bot check; latest archive is May 2026
 - url: https://academic.oup.com/jamia/pages/General_Instructions
   for: JAMIA
   why: 403 to scripts; only summarised fetches worked
-- url: https://academic.oup.com/bib/pages/General_Instructions
+- url: https://academic.oup.com/bib/pages/author-guidelines
   for: Briefings in Bioinformatics
   why: 403 to scripts; only truncated fetches worked
 - url: https://genome.cshlp.org/ifora_Artificial

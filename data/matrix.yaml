@@ -59,14 +59,14 @@ groups:
     gram: [1, Exempt]
     draft: [3, Banned in some sections]
     img: [3, '"Primarily brainstorming"']
-    rev: [4, 'No AI in review, even for language (2025)']
-  - name: Cell Press ⚠
-    sub: excerpts
-    disc: [3, Statement after Declaration of Interests]
-    gram: [2, ⚠ Ambiguous in practice]
-    draft: [2, 'Allowed, disclosed']
-    img: [2, Explanatory only]
-    rev: [null, ⚠ Presumably Elsevier]
+    rev: [4, 'No AI in review, even for language']
+  - name: Cell Press
+    sub: Oct 2026
+    disc: [3, 'Statement + STAR Methods; tool, version']
+    gram: [1, Exempt (Elsevier rule)]
+    draft: [2, 'Allowed, declared']
+    img: [3, Explanatory only; no AI cover art]
+    rev: [3, 'Elsevier: private tools only']
   - name: Oxford UP
     sub: JAMIA · NAR
     disc: [2, Cover letter + Methods/Ack]
@@ -121,8 +121,8 @@ groups:
     disc: [2, Cover letter + manuscript]
     gram: [null, Not stated]
     draft: [2, 'Allowed, disclosed']
-    img: [null, ⚠ Not found]
-    rev: [null, ⚠ Not found]
+    img: [null, Not addressed]
+    rev: [null, Not addressed]
   - name: NEJM AI
     sub: May 2026
     disc: [2, Cover letter + manuscript / Ack]
@@ -196,7 +196,7 @@ groups:
     img: [2, AI figures described in Methods]
     rev: [null, ⚠ Not verified]
   - name: AMIA Symposium 2026
-    sub: 2027 Amplify call unread
+    sub: no 2027 Amplify policy found
     disc: [3, 'Type, parameters, impact; paper + form']
     gram: [null, Covers research use only]
     draft: [null, Not addressed]
