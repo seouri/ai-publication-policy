@@ -24,6 +24,7 @@ Run `uv run build-page --check && uv run pytest -q` before you finish any change
 |---|---|
 | Add or edit a venue, rule or source | `data/publishers.yaml` or `data/frameworks.yaml` |
 | Add or edit a strictness matrix row | `data/matrix.yaml` |
+| Date of the last survey | `data/survey.yaml` (only after re-verifying sources) |
 | Sources and caveats in the page footer | `src/ai_publication_policy/template.html` (plain HTML) |
 | A new data field or validation rule | `build.py`, and the JS in `template.html` that reads it, and a test |
 | Layout, styles or interaction | `template.html` only |
@@ -43,6 +44,7 @@ This is a reference that people use to make submission decisions, so accuracy ma
   - Remove a `⚠` only after reading the official wording yourself.
 - **Quote, don't paraphrase, for key wording.** Put short verbatim phrases in double quotes inside `rules`. Keep everything else brief and in plain language.
 - **Date policies.** Fill in `date:` when the source shows when the policy was last updated, or when you read it from an archived snapshot (e.g. `policy page Jun 2026`).
+- **Survey date.** Set `last_surveyed` in `data/survey.yaml` to the day you finished re-verifying sources against official pages. Don't change it for code, template or wording-only edits, or for commits and deploys.
 - **Describe what this layer adds.** A journal's `rules` should list what it adds to or changes from its publisher's policy. Use `See <Publisher>` when it adds nothing. Set `vs_parent` to match.
 
 ### Fetching blocked policy pages

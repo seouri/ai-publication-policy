@@ -1,0 +1,5 @@
+# Date of the last survey: the day the policy sources were actually rechecked.
+# Update it only after re-verifying sources. Do not bump it for code, layout or
+# wording changes, or because something was committed or deployed.
+
+last_surveyed: 2026-10-23

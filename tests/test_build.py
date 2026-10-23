@@ -75,3 +75,17 @@ def test_standalone_page_is_a_full_document():
     assert html.startswith("<!doctype html>")
     assert '<meta name="viewport"' in html and html.rstrip().endswith("</html>")
     assert not build(DATA).startswith("<!doctype")
+
+
+def test_survey_date_comes_from_data_not_build_day():
+    html = build(DATA)
+    day = yaml.safe_load((DATA / "survey.yaml").read_text())["last_surveyed"]
+    assert f'<time datetime="{day.isoformat()}">' in html
+    assert "<!--@SURVEYED@-->" not in html
+
+
+@pytest.mark.parametrize("value", ["October 2026", "2026-10", "2026-10-23T09:00:00"])
+def test_survey_date_must_be_a_day(data_copy, value):
+    (data_copy / "survey.yaml").write_text(f"last_surveyed: {value}\n")
+    with pytest.raises(DataError, match="last_surveyed"):
+        build(data_copy)

@@ -13,7 +13,7 @@ framework (ICMJE, COPE, WAME, STM, ISCB)
 
 Every layer adds requirements of its own. Where two layers conflict, the stricter applicable one binds you. The page makes that lineage visible, so you can see which rule actually governs your submission.
 
-The scope is clinical and biomedical informatics venues: about 40 frameworks, publishers, journals and article-type rules, plus a strictness matrix that also covers the major ML and informatics conferences. The data was surveyed in **October 2026**.
+The scope is clinical and biomedical informatics venues: about 40 frameworks, publishers, journals and article-type rules, plus a strictness matrix that also covers the major ML and informatics conferences. The date of the last survey is shown at the top of the page and set in `data/survey.yaml`.
 
 ## What's on the page
 
@@ -77,6 +77,7 @@ data/
   frameworks.yaml   Tier 1: cross-publisher frameworks and society overlays
   publishers.yaml   Tier 2 publishers, each nesting its Tier 3 journals and Tier 4 article_rules
   matrix.yaml       strictness matrix (columns + grouped rows)
+  survey.yaml       date of the last survey (set by hand)
 src/ai_publication_policy/
   template.html     page markup, styles and rendering script; data is injected at the /*@DATA@*/ marker
   build.py          loads and validates the YAML, renders the page
@@ -134,6 +135,10 @@ Add an entry to `frameworks.yaml`, then put its id in the `cites:` list of each 
 Add a row under the right group in `matrix.yaml`. Each column key takes `[score, text]`:
 - `score` runs from 1 (permissive) to 4 (most restrictive). Use `null` when the policy doesn't address the rule or it couldn't be verified.
 - A column you leave out renders as `[null, "Not stated"]`.
+
+### Survey date
+
+`data/survey.yaml` holds `last_surveyed`, the day the policy sources were last rechecked against official pages. It appears in the page header and footer. Change it only after actually re-verifying sources. Leave it alone for code, layout or wording changes, and don't bump it for commits or deploys. The build never takes the date from the clock.
 
 ### Footer
 

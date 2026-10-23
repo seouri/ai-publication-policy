@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 import sys
 from importlib.resources import files
@@ -18,6 +19,7 @@ NODE_FIELDS = {
 }
 REQUIRED = ("id", "name", "verdict", "rules", "url")
 MARKER = "/*@DATA@*/null"
+SURVEY_MARKER = "<!--@SURVEYED@-->"
 
 # template.html is a page body for hosts that supply their own document shell (Claude artifacts).
 # For a standalone site (GitHub Pages) it gets wrapped in this shell instead.
@@ -140,6 +142,18 @@ def load_matrix(data_dir: Path) -> tuple[list, list]:
     return [[c["key"], c["label"], c.get("hint", "")] for c in columns], out
 
 
+def load_survey_date(data_dir: Path) -> dt.date:
+    """The day sources were last rechecked. Set by hand in data/survey.yaml, never from the build clock."""
+    raw = _load(data_dir / "survey.yaml").get("last_surveyed")
+    if not isinstance(raw, dt.date) or isinstance(raw, dt.datetime):
+        raise DataError("survey.yaml: last_surveyed must be a date written as YYYY-MM-DD")
+    return raw
+
+
+def _survey_html(day: dt.date) -> str:
+    return f'<time datetime="{day.isoformat()}">{day.day} {day:%b %Y}</time>'
+
+
 def build(data_dir: Path, standalone: bool = False) -> str:
     nodes = load_nodes(data_dir)
     columns, matrix = load_matrix(data_dir)
@@ -149,7 +163,9 @@ def build(data_dir: Path, standalone: bool = False) -> str:
     payload = json.dumps({"nodes": nodes, "columns": columns, "matrix": matrix}, ensure_ascii=False, indent=1)
     # Keep "</script>" inside a string from closing the page's script element.
     payload = payload.replace("</", "<\\/")
-    page = template.replace(MARKER, payload)
+    if SURVEY_MARKER not in template:
+        raise DataError("template.html is missing the survey-date marker")
+    page = template.replace(MARKER, payload).replace(SURVEY_MARKER, _survey_html(load_survey_date(data_dir)))
     if not standalone:
         return page
     # The template's leading <title>, <link> and <style> belong in <head>; the rest is the body.

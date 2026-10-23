@@ -15,6 +15,7 @@
   --rule: #dde1e5;
   --edge: #c5ccd3;
   --focus: #1c5cab;
+  --accent: #1c5cab;
   --na: #e6e9ec;
   --na-ink: #858d96;
   --s1: #86b6ef; --s2: #5598e7; --s3: #2a78d6; --s4: #1c5cab; --s5: #0d366b;
@@ -25,7 +26,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0e1012; --surface: #16181b; --ink: #eef0f2; --ink-2: #b4bcc5; --muted: #7f8892;
-    --rule: #2a2e33; --edge: #3a4048; --focus: #6da7ec; --na: #23272c; --na-ink: #7f8892;
+    --rule: #2a2e33; --edge: #3a4048; --focus: #6da7ec; --accent: #6da7ec; --na: #23272c; --na-ink: #7f8892;
     --s1: #184f95; --s2: #256abf; --s3: #3987e5; --s4: #6da7ec; --s5: #b7d3f6;
     --on-s1: #ffffff; --on-s2: #ffffff; --on-s3: #ffffff; --on-s4: #0e1012; --on-s5: #0e1012;
     color-scheme: dark;
@@ -33,7 +34,7 @@
 }
 :root[data-theme="dark"] {
   --bg: #0e1012; --surface: #16181b; --ink: #eef0f2; --ink-2: #b4bcc5; --muted: #7f8892;
-  --rule: #2a2e33; --edge: #3a4048; --focus: #6da7ec; --na: #23272c; --na-ink: #7f8892;
+  --rule: #2a2e33; --edge: #3a4048; --focus: #6da7ec; --accent: #6da7ec; --na: #23272c; --na-ink: #7f8892;
   --s1: #184f95; --s2: #256abf; --s3: #3987e5; --s4: #6da7ec; --s5: #b7d3f6;
   --on-s1: #ffffff; --on-s2: #ffffff; --on-s3: #ffffff; --on-s4: #0e1012; --on-s5: #0e1012;
   color-scheme: dark;
@@ -47,6 +48,7 @@ body {
 .wrap { max-width: 1320px; margin: 0 auto; display: grid; gap: 40px; }
 h1, h2, h3 { text-wrap: balance; margin: 0; }
 .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.surveyed { color: var(--accent); font-weight: 500; }
 header.top { display: grid; gap: 14px; max-width: 920px; }
 header.top h1 { font-size: clamp(32px, 4.6vw, 54px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.02; }
 header.top h1 span { color: var(--s3); }
@@ -140,7 +142,7 @@ footer p { margin: 0; }
 
 <div class="wrap">
   <header class="top">
-    <div class="eyebrow">Generative AI in manuscript preparation · surveyed October 2026</div>
+    <div class="eyebrow">Generative AI in manuscript preparation · <span class="surveyed">Last surveyed <!--@SURVEYED@--></span></div>
     <h1>Who sets the rule you <span>actually</span> have to follow?</h1>
     <p>AI-use policies for clinical and biomedical informatics venues cascade through four layers. Each layer inherits the one above and adds its own requirements, and in a conflict the strictest applicable layer binds you. Select any node to trace its lineage and see what that layer adds.</p>
   </header>
@@ -185,7 +187,7 @@ footer p { margin: 0; }
   </section>
 
   <footer>
-    <p>Sources: official policy pages, PDFs and archived copies of them, rechecked in October 2026. Frameworks: ICMJE (Jan 2026), COPE (Feb 2023) and WAME (May 2023), both still current, STM (Sept 2025), ISCB (Apr 2025). Publishers: Springer Nature (Sept 2026), Elsevier (June 2026), OUP, JMIR (Oct 2026), Thieme (2026), PLOS (Sept 2026), CSHL Press, JAMA Network (Sept 2026), NEJM Group (July 2026), BMJ (Sept 2023, unchanged), AAAS/Science (Dec 2025), The Lancet (Aug 2026). Conferences: NeurIPS, ICML, ICLR, ACL/ARR, CHIL, ML4H, MLHC, ISMB/ISCB, RECOMB, PSB, AMIA and ACM, 2026–27 cycles. Policies change often, so check the venue's own page right before you submit.</p>
+    <p>Sources: official policy pages, PDFs and archived copies of them, last rechecked <span class="surveyed"><!--@SURVEYED@--></span>. Frameworks: ICMJE (Jan 2026), COPE (Feb 2023) and WAME (May 2023), both still current, STM (Sept 2025), ISCB (Apr 2025). Publishers: Springer Nature (Sept 2026), Elsevier (June 2026), OUP, JMIR (Oct 2026), Thieme (2026), PLOS (Sept 2026), CSHL Press, JAMA Network (Sept 2026), NEJM Group (July 2026), BMJ (Sept 2023, unchanged), AAAS/Science (Dec 2025), The Lancet (Aug 2026). Conferences: NeurIPS, ICML, ICLR, ACL/ARR, CHIL, ML4H, MLHC, ISMB/ISCB, RECOMB, PSB, AMIA and ACM, 2026–27 cycles. Policies change often, so check the venue's own page right before you submit.</p>
     <p>⚠ marks rules that could not be confirmed from an official source: Cell Press pages (search excerpts only), the legacy wording at some Nature research journals, ACM reviewer rules, and AMIA's 2027 Amplify call. The Lancet reviewer rule comes from an Aug 2025 archive and may predate Elsevier's June 2026 change.</p>
   </footer>
 </div>
