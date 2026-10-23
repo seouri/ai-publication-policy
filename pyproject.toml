@@ -1,0 +1,26 @@
+[project]
+name = "ai-publication-policy"
+version = "0.1.0"
+description = "Interactive map of how generative-AI policies cascade across biomedical journals"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "data/LICENSE"]
+authors = [
+    { name = "Joon Lee", email = "seouri@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pyyaml>=6.0.3",
+]
+
+[project.scripts]
+build-page = "ai_publication_policy:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

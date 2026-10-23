@@ -1,0 +1,423 @@
+# Tier 2 publishers, each with its Tier 3 journals and optional Tier 4 article_rules.
+# File order is the top-to-bottom order in the cascade. See README for fields.
+
+publishers:
+- id: sn
+  name: Springer Nature
+  strictness: 3
+  date: ≈ mid-2026
+  url: https://www.springernature.com/gp/policies/editorial-policies/ai-manuscript-preparation
+  verdict: A green/amber/red risk framework that applies to authors, reviewers and editors alike.
+  rules:
+  - 'Green (language polish, translation): allowed, still "describe use"'
+  - 'Amber (extensive writing support): allowed with oversight and disclosure'
+  - 'Red: fabrication, AI as author, delegating peer review, deepfake images'
+  - The old copy-editing exemption is gone
+  - Images allowed only if traceable to verifiable source data
+  - '"Declaration does not negatively influence editorial decisions"'
+  journals:
+  - id: nature
+    name: Nature
+    strictness: 3
+    vs_parent: inconsistent
+    tier: Journal · flagship
+    url: https://www.nature.com/nature/editorial-policies/ai
+    verdict: Nature's own AI policy page carries the portfolio risk framework, while its submission guide still uses the older Methods-documentation wording.
+    rules:
+    - 'Editorial policy page: green/amber/red risk framework; authors "disclose AI use for trust and transparency"'
+    - 'Initial-submission guide: "Use of an LLM should be properly documented in the Methods section"'
+    - 'Red tier: fabricated data or citations, AI authorship, delegating peer review, photorealistic images'
+    - 'Reviewers: no manuscript content in "unsecured or public AI systems"; disclose any AI use in the report'
+    - 'Editors use AI only to "summarise, retrieve or highlight information"'
+    - 'Practical advice: describe use in Methods and add an AI declaration'
+  - id: nm
+    name: Nature Medicine
+    strictness: 3
+    vs_parent: inconsistent
+    url: https://www.nature.com/nm/submission-guidelines/preparing-your-submission
+    verdict: The submission guidelines still use the pre-2026 wording, which now sits alongside the new risk framework.
+    rules:
+    - 'Guidelines: "Use of an LLM should be properly documented in the Methods section"'
+    - 'Guidelines: generative AI cover images "not permitted"'
+    - 'Practical advice: describe use in Methods and add an AI declaration'
+  - id: nmi
+    name: Nature Machine Intelligence
+    strictness: 3
+    vs_parent: inconsistent
+    url: https://www.nature.com/natmachintell/submission-guidelines/preparing-your-submission
+    verdict: 'Same mismatch as Nature Medicine: legacy guideline text alongside the new framework.'
+    rules:
+    - LLM use documented in Methods (legacy text)
+    - Risk framework applies at the portfolio level
+    - 'Practical advice: satisfy both'
+  - id: nmb
+    name: Nat. Methods · Biotech · BME
+    strictness: 3
+    vs_parent: inconsistent
+    tier: Journals
+    url: https://www.nature.com/nature-portfolio/editorial-policies/ai
+    verdict: All three carry the same legacy guideline wording as Nature Medicine.
+    rules:
+    - Methods documentation of LLM use (legacy)
+    - Generative AI cover art not permitted (legacy)
+    - Portfolio risk framework applies on top
+  - id: npj
+    name: npj Digital Medicine
+    strictness: 3
+    vs_parent: same
+    url: https://www.nature.com/npjdigitalmed/editorial-policies/artificial-intelligence
+    verdict: 'Fully migrated: its AI page repeats the portfolio risk framework word for word.'
+    rules:
+    - Green / amber / red tiers, as for Springer Nature
+    - AI declaration; image use also noted in the caption
+  - id: gb
+    name: Genome Biology (BMC)
+    strictness: null
+    vs_parent: unverified
+    url: https://link.springer.com/brands/bmc/editorial-policies
+    verdict: Presumably inherits the Springer Nature framework, but the BMC page was blocked by a bot check.
+    rules:
+    - A search excerpt says "LLMs do not currently satisfy our authorship criteria"
+    note: ⚠ Unverified, so not scored.
+- id: els
+  name: Elsevier
+  strictness: 3
+  date: June 2026
+  url: https://www.elsevier.com/about/policies-and-standards/generative-ai-policies-for-journals
+  verdict: A dedicated, published AI declaration with a clean grammar exemption and the most precise image rules.
+  rules:
+  - Separate declaration right before the references, using the template "…used [TOOL] in order to [REASON]…"
+  - 'Exempt: basic grammar/spelling, reference managers, accessibility tools; translation is not exempt'
+  - 'Images: schematics OK with caption; data visualizations only if reproducible; primary research images never'
+  - No AI graphical abstracts; fabricated references can lead to rejection
+  - 'Reviewers: no uploads; only private tools for support tasks'
+  journals:
+  - id: ldh
+    name: Lancet Digital Health
+    strictness: 4
+    vs_parent: stricter
+    date: Aug 2026
+    url: https://www.thelancet.com/pb-assets/Lancet/authors/tldh-info-for-authors-1723037803860.pdf
+    verdict: Elsevier's declaration, plus prompts on request and a stricter figure rule of its own.
+    rules:
+    - 'Declaration: tool, version, purpose, oversight; editors may request prompts'
+    - Basic grammar, spelling and punctuation need no declaration
+    - 'Figures: AI "primarily as a tool for brainstorming"'
+    - No images of copyrighted material, real people or brands
+    - Do not grant AI tools training rights over your manuscript
+    note: ⚠ Lancet reviewer policy page returned 403.
+    cites:
+    - icmje
+    article_rules:
+    - id: lanop
+      name: World Report · Comment
+      sub: Lancet family
+      strictness: 5
+      url: https://www.thelancet.com/pb-assets/Lancet/authors/tldh-info-for-authors-1723037803860.pdf
+      verdict: Generative AI is banned in some sections and limited to grammar in others.
+      rules:
+      - 'World Report and Perspectives: generative AI banned'
+      - 'Comment and Correspondence: grammar and spelling only, with no translation, argument improvement, shortening or reference work'
+  - id: cell
+    name: Cell Rep Med · Patterns · Cell Sys
+    strictness: 3
+    vs_parent: stricter
+    tier: Journals
+    url: https://www.cell.com/cell-reports-medicine/information-for-authors/journal-policies
+    verdict: Elsevier policy, but research AI use is declared twice and the statement sits in a different place.
+    rules:
+    - Statement goes after the Declaration of Interests
+    - Research use goes in STAR Methods and in the AI statement
+    - Explanatory images allowed; no AI in research or data images
+    note: ⚠ cell.com blocked access; based on search excerpts.
+  - id: jbi
+    name: J Biomed Informatics
+    strictness: 3
+    vs_parent: same
+    url: https://www.elsevier.com/about/policies-and-standards/generative-ai-policies-for-journals
+    verdict: Standard Elsevier policy with no journal-specific additions.
+    rules:
+    - See Elsevier
+  - id: ijmi
+    name: Int J Med Informatics
+    strictness: 3
+    vs_parent: same
+    url: https://www.elsevier.com/about/policies-and-standards/generative-ai-policies-for-journals
+    verdict: Standard Elsevier policy with no journal-specific additions.
+    rules:
+    - See Elsevier
+- id: oup
+  name: Oxford UP
+  strictness: 2
+  date: undated
+  url: https://academic.oup.com/journals/pages/authors/preparing_your_manuscript/ethics
+  verdict: A thin baseline. Societies such as ISCB add the real constraints on top.
+  rules:
+  - AI is not an author, and OUP screens author lists for it
+  - Disclose in the cover letter and in Methods or Acknowledgements
+  - Covers content, images, code, data processing and translation
+  - No OUP-wide reviewer rule for journals
+  cites:
+  - cope
+  journals:
+  - id: jamia
+    name: JAMIA · JAMIA Open
+    strictness: 2
+    vs_parent: same
+    tier: Journals
+    url: https://academic.oup.com/jamia/pages/General_Instructions
+    verdict: The field's flagship carries only OUP's standard wording, with no AMIA additions found.
+    rules:
+    - AI is not an author
+    - Disclose in the cover letter and in Methods or Acknowledgements
+    - No image or reviewer clause on the page
+    note: No AMIA additions were found, though that isn't proof none exist.
+  - id: bioinf
+    name: Bioinformatics
+    strictness: 5
+    vs_parent: stricter
+    tier: Journal · ISCB official
+    url: https://academic.oup.com/bioinformatics/pages/author-guidelines
+    verdict: The strictest journal surveyed. ISCB policy overrides the permissive OUP baseline.
+    rules:
+    - '"Not acceptable to use LLMs… to draft papers"'
+    - Disclose in supplementary materials, plus OUP's cover-letter and Methods rule
+    - Reviewers may not submit manuscripts to an LLM or rely on one
+    cites:
+    - iscb
+  - id: bib
+    name: Briefings in Bioinformatics
+    strictness: 5
+    vs_parent: stricter
+    url: https://academic.oup.com/bib/pages/General_Instructions
+    verdict: Appears to carry ISCB-derived wording even though it isn't an ISCB journal.
+    rules:
+    - Same acceptable and unacceptable use lists as Bioinformatics
+    note: ⚠ Only a truncated fetch was available; confirm on the live page.
+    cites:
+    - iscb
+    weak_cites:
+    - iscb
+  - id: nar
+    name: Nucleic Acids Research
+    strictness: 2
+    vs_parent: same
+    url: https://academic.oup.com/nar/pages/author-guidelines
+    verdict: Standard OUP wording only.
+    rules:
+    - A claimed AI-image ban appears only on a third-party blog
+    note: ⚠ Image ban unverified.
+- id: jmirp
+  name: JMIR Publications
+  strictness: 4
+  date: edited Sept 2026
+  url: https://support.jmir.org/hc/en-us/articles/13387268671771
+  verdict: 'The heaviest disclosure burden: it asks for full chat transcripts.'
+  rules:
+  - Submit complete prompts and transcripts as a Multimedia Appendix
+  - Research use goes in Methods; writing help goes in Acknowledgments, as "[Product, Version, Company, Year]"
+  - Verbatim AI text must appear as a blockquote, textbox or figure
+  - No grammar exemption
+  - AI table-of-contents images are encouraged (prompt in caption, CC0)
+  - Reviewers may use AI with a set disclosure format; consumer-tier free ChatGPT not allowed
+  cites:
+  - stm
+  journals:
+  - id: jmir
+    name: JMIR · Med Inform · JMIR AI
+    strictness: 4
+    vs_parent: same
+    tier: Journals
+    url: https://ai.jmir.org/author-information/publication-ethics-and-malpractice
+    verdict: All three titles link to the same publisher policy.
+    rules:
+    - See JMIR Publications
+- id: thieme
+  name: Thieme
+  strictness: 4
+  date: '2026'
+  url: https://www.thieme.com/en-us/journal-policies
+  verdict: A declaration is mandatory even when you used no AI, and it has the strictest image rule.
+  rules:
+  - A Declaration of Generative AI Use is required at submission and is published
+  - 'If none: "The authors confirm that no Generative AI was used…"'
+  - Generative AI images, video and illustrations are banned unless the editor approves and a form is signed
+  - Language editing is disclosable, with no exemption
+  cites:
+  - cope
+  journals:
+  - id: thj
+    name: ACI · Methods Inf Med · Yearbook
+    strictness: 4
+    vs_parent: same
+    tier: Journals
+    url: https://www.thieme.com/en-us/journal-policies
+    verdict: The Thieme publisher policy applies. The Yearbook also points to ICMJE.
+    rules:
+    - Mandatory declaration, including a statement when no AI was used
+    - Generative AI images banned without a signed exception
+    note: ⚠ Current journal-specific pages were not reachable.
+    cites:
+    - icmje
+- id: plos
+  name: PLOS
+  strictness: 3
+  date: undated
+  url: https://journals.plos.org/ploscompbiol/s/ethical-publishing-practice
+  verdict: Permissive on use, firm on review. AI cannot act as a reviewer or decision-maker.
+  rules:
+  - Disclose tool, how it was used, which sections, and how output was verified
+  - 'Exempt: spelling, grammar and clarity edits, and cover letters'
+  - Images are fine if disclosed in the legend and not misleading
+  - Reviewers and editors may only copyedit their own comments, and must disclose that
+  - Disclosure "is not a basis for negative editorial decisions"
+  journals:
+  - id: pcb
+    name: PLOS Comp Biol
+    strictness: 3
+    vs_parent: same
+    url: https://journals.plos.org/ploscompbiol/s/ethical-publishing-practice
+    verdict: Standard PLOS policy.
+    rules:
+    - See PLOS
+- id: cshl
+  name: CSHL Press
+  strictness: 3
+  date: undated
+  url: https://cshjournals.org/editorial_policies
+  verdict: Methods-only disclosure, and AI graphics are strongly discouraged.
+  rules:
+  - Document tool, version and a complete description in Methods
+  - 'Exempt: language refinement, grammar checkers, reference managers'
+  - AI-generated or AI-edited graphics are "strongly discouraged" and need editor approval
+  - Reviewers may not put any part of a manuscript into chatbots
+  - Tool terms must not restrict publishing its output
+  cites:
+  - icmje
+  journals:
+  - id: gr
+    name: Genome Research
+    strictness: 3
+    vs_parent: same
+    url: https://genome.cshlp.org/ifora_Artificial
+    verdict: Standard CSHL policy.
+    rules:
+    - No need to acknowledge AI grammar/spelling checkers or reference managers
+- id: jaman
+  name: JAMA Network
+  strictness: 4
+  date: Sept 2026
+  url: https://jamanetwork.com/journals/jama/pages/instructions-for-authors
+  verdict: The most granular disclosure in clinical publishing, plus bans by article type.
+  rules:
+  - 'Acknowledgment: name, version, manufacturer, dates of use, sections affected'
+  - 'Research use: prompts with their sequence and revisions, in Methods'
+  - Basic grammar and spelling checking is exempt
+  - AI-created clinical images, video and audio are banned (unless part of the method)
+  - Do not use AI to generate or format references
+  - 'Reviewers: no confidential manuscripts in chatbots'
+  cites:
+  - icmje
+  journals:
+  - id: jama
+    name: JAMA · JAMA Netw Open
+    strictness: 4
+    vs_parent: same
+    tier: Journals
+    date: Sept 2026
+    url: https://jamanetwork.com/journals/jamanetworkopen/pages/instructions-for-authors
+    verdict: Network policy applies to both titles.
+    rules:
+    - See JAMA Network
+    - Article-type bans apply (next layer)
+    article_rules:
+    - id: jamaop
+      name: Opinion & letters
+      sub: JAMA
+      strictness: 5
+      url: https://jamanetwork.com/journals/jama/pages/instructions-for-authors
+      verdict: No AI drafting in JAMA's voice-driven formats.
+      rules:
+      - Viewpoints, Piece of My Mind, Poetry, Letters and Online Comments may not be drafted with AI
+- id: nejmg
+  name: NEJM Group
+  strictness: 3
+  date: July 2026
+  url: https://www.nejm.org/about-nejm/editorial-policies
+  verdict: Adopts ICMJE almost verbatim, and discloses its own editorial use of AI.
+  rules:
+  - 'Disclose in the cover letter and the manuscript: technologies used and what they produced'
+  - Review and edit all AI material; never cite AI as a primary source
+  - NEJM uses AI "selectively"; humans make every editorial decision
+  note: ⚠ NEJM image and reviewer rules not found on accessible official pages.
+  cites:
+  - icmje
+  journals:
+  - id: nejm
+    name: NEJM
+    strictness: 3
+    vs_parent: same
+    url: https://www.nejm.org/about-nejm/editorial-policies
+    verdict: The group policy applies unchanged.
+    rules:
+    - See NEJM Group
+  - id: nejmai
+    name: NEJM AI
+    strictness: 2
+    vs_parent: looser
+    url: https://ai.nejm.org/about/editorial-policies
+    verdict: Formally ICMJE, but the founding editorial actively encourages LLM use.
+    rules:
+    - 'Koller et al. 2023: "we support and encourage the use of LLMs"'
+    - Bans are called unenforceable; LLMs are framed as an equity aid
+    - The editorial says Acknowledgments while the policy says cover letter plus manuscript, so do both
+    - An invitation-only Fast Track combines human and AI review
+    note: ⚠ Fast Track details come from secondary sources.
+- id: bmjg
+  name: BMJ Group
+  strictness: 3
+  date: reviewed 6-monthly
+  url: https://authors.bmj.com/policies/ai-use/
+  verdict: Disclosure goes in the contributor statement and reaches back to underlying work.
+  rules:
+  - State what, why and how in the contributor section, plus Methods for research use
+  - Consider giving editors the inputs and outputs as supplements
+  - Also disclose AI in underlying prior work and key cited sources
+  - No grammar exemption; may screen with detectors before and after publication
+  - 'Reviewers: declare any AI use; no public tools'
+  cites:
+  - icmje
+  journals:
+  - id: bmj
+    name: The BMJ
+    strictness: 3
+    vs_parent: same
+    url: https://authors.bmj.com/policies/ai-use/
+    verdict: The group policy applies unchanged.
+    rules:
+    - See BMJ Group
+- id: aaas
+  name: AAAS (Science journals)
+  strictness: 4
+  date: policy page Jun 2026 · guidelines PDF
+  url: https://www.science.org/cms/asset/34d20d04-f8a3-4983-b6de-6551185ea579/science_journals_guidelines_for_ai_use.pdf
+  verdict: A use-by-use table says what needs declaring. Drafting is allowed with disclosure, but illustrative AI figures are banned and nothing from the manuscript may go into an AI tool during review or revision.
+  rules:
+  - AI tools "do not meet the Science journals' criteria for authorship", and cited sources may not be AI-authored either
+  - Note AI use in the cover letter, plus Methods or Acknowledgments depending on the use
+  - 'Research use (code, data generation or analysis): describe in Methods with model name and version'
+  - 'Drafting, translation, or editing data visualizations: declare in Acknowledgments with model name and version'
+  - 'No declaration needed: language refinement, literature searches, formatting data or code, gathering references'
+  - AI images, diagrams or figures for illustration are not allowed; exceptions must be discussed with the editor
+  - Authors may not enter the manuscript into an AI tool when revising, or enter reviews into one to draft a response
+  - Reviewers may not put any part of the manuscript into an AI tool; they may polish their own language with non-training tools if declared
+  journals:
+  - id: science
+    name: Science
+    strictness: 4
+    vs_parent: same
+    tier: Journal · flagship
+    url: https://www.science.org/content/page/science-journals-editorial-policies
+    verdict: One policy covers every Science family journal, and the flagship adds nothing to it.
+    rules:
+    - See AAAS (Science journals)

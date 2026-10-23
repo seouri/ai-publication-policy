@@ -1,0 +1,64 @@
+# Tier 1: cross-publisher frameworks and society overlays.
+# Publishers and journals link to these with `cites: [id, ...]`. See README for fields.
+
+frameworks:
+- id: icmje
+  name: ICMJE
+  strictness: 3
+  date: Jan 2026
+  url: https://www.icmje.org/icmje-recommendations.pdf
+  verdict: The baseline for clinical journals. Members and adopters inherit it wholesale.
+  rules:
+  - Disclose at submission in both the cover letter and the manuscript
+  - Writing help goes in Acknowledgments; data, analysis or figure use goes in Methods
+  - 'Research use: tool, version and prompts "where applicable"'
+  - Spell-check and grammar "generally viewed as acceptable", though not explicitly exempt from disclosure
+  - AI output may not be cited as a primary source; nondisclosure "may be construed as misconduct"
+  - Reviewers need permission before uploading anywhere confidentiality can't be assured
+- id: cope
+  name: COPE
+  strictness: 2
+  date: Feb 2023
+  url: https://publicationethics.org/guidance/cope-position/authorship-and-ai-tools
+  verdict: The ethics baseline most publishers cite. Short, and silent on reviewers and exemptions.
+  rules:
+  - 'AI is not an author: it can''t take responsibility, declare conflicts, or manage copyright'
+  - Disclose which tool and how it was used, in Methods or a similar section
+  - Authors are liable for any ethics breach, including in AI-produced parts
+- id: wame
+  name: WAME
+  strictness: 4
+  tier: Cross-publisher framework · advisory
+  date: May 2023
+  url: https://wame.org/page3.php?id=106
+  verdict: The strictest framework on prompts, but advisory. No surveyed journal adopts it verbatim.
+  rules:
+  - All prompts used to generate text, tables or illustrations go in Acknowledgments
+  - Analysis or code use is stated in the Abstract and Methods, with the full prompt, date/time, tool and version
+  - Giving a manuscript to a chatbot "breaches confidentiality"
+  - Editors should have AI-detection tools
+  note: No surveyed journal cites WAME as binding, so it has no outgoing links.
+- id: stm
+  name: STM taxonomy
+  strictness: null
+  tier: Cross-publisher classification
+  date: Sept 2025
+  url: https://s3.eu-west-2.amazonaws.com/stm.offloadmedia/wp-content/uploads/2025/04/23020709/STM_AI_Classification_Recs_19_Sept2025-1.pdf
+  verdict: A vocabulary, not a rule set. Publishers decide what each category requires.
+  rules:
+  - Nine categories of use, from language refinement to presenting AI output as original data
+  - Research-process AI is out of scope
+  - Asks publishers to state whether exact prompts must be reported
+  note: 'Not scored for strictness: it sets no requirements.'
+- id: iscb
+  name: ISCB
+  strictness: 5
+  tier: Scientific society overlay
+  date: Apr 2025
+  url: https://www.iscb.org/about-iscb/policy-statements-bylaws-and-legal-documents/acceptable-use-of-large-language-models-policy
+  verdict: The only policy-setter here that bans LLM drafting outright. It overrides OUP for the journals that adopt it.
+  rules:
+  - '"Papers must be written by researchers": no LLM drafting'
+  - 'Allowed: grammar, translation, code, LLMs as a research method'
+  - Any LLM example text must be labeled and explained
+  - Reviewers may not use LLMs at all

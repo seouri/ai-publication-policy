@@ -1,0 +1,314 @@
+<title>AI Policy Cascade</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one cascade read left→right (framework → publisher → journal → article type),
+   a pinned inspector beside it, then a strictness matrix as the comparison table. */
+:root {
+  --bg: #f1f3f5;
+  --surface: #fbfbfa;
+  --ink: #101418;
+  --ink-2: #4c5560;
+  --muted: #858d96;
+  --rule: #dde1e5;
+  --edge: #c5ccd3;
+  --focus: #1c5cab;
+  --na: #e6e9ec;
+  --na-ink: #858d96;
+  --s1: #86b6ef; --s2: #5598e7; --s3: #2a78d6; --s4: #1c5cab; --s5: #0d366b;
+  --on-s1: #101418; --on-s2: #101418; --on-s3: #ffffff; --on-s4: #ffffff; --on-s5: #ffffff;
+  --display: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1012; --surface: #16181b; --ink: #eef0f2; --ink-2: #b4bcc5; --muted: #7f8892;
+    --rule: #2a2e33; --edge: #3a4048; --focus: #6da7ec; --na: #23272c; --na-ink: #7f8892;
+    --s1: #184f95; --s2: #256abf; --s3: #3987e5; --s4: #6da7ec; --s5: #b7d3f6;
+    --on-s1: #ffffff; --on-s2: #ffffff; --on-s3: #ffffff; --on-s4: #0e1012; --on-s5: #0e1012;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1012; --surface: #16181b; --ink: #eef0f2; --ink-2: #b4bcc5; --muted: #7f8892;
+  --rule: #2a2e33; --edge: #3a4048; --focus: #6da7ec; --na: #23272c; --na-ink: #7f8892;
+  --s1: #184f95; --s2: #256abf; --s3: #3987e5; --s4: #6da7ec; --s5: #b7d3f6;
+  --on-s1: #ffffff; --on-s2: #ffffff; --on-s3: #ffffff; --on-s4: #0e1012; --on-s5: #0e1012;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--display); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+}
+.wrap { max-width: 1320px; margin: 0 auto; display: grid; gap: 40px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+.eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+header.top { display: grid; gap: 14px; max-width: 920px; }
+header.top h1 { font-size: clamp(32px, 4.6vw, 54px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.02; }
+header.top h1 span { color: var(--s3); }
+header.top p { margin: 0; color: var(--ink-2); font-size: 16.5px; max-width: 68ch; }
+
+/* Floor */
+.floor { display: grid; gap: 12px; }
+.floor ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; border-radius: 10px; overflow: hidden; }
+.floor li { background: var(--surface); padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+.floor li b { font-weight: 700; font-size: 14px; }
+.floor li span { color: var(--ink-2); font-size: 13px; line-height: 1.4; }
+@media (max-width: 900px) { .floor ol { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .floor ol { grid-template-columns: 1fr; } }
+
+/* Cascade */
+.cascade-head { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: end; justify-content: space-between; }
+.cascade-head h2, .matrix-head h2 { font-size: 26px; font-weight: 750; letter-spacing: -0.015em; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: 12.5px; color: var(--ink-2); }
+.ramp { display: inline-flex; gap: 2px; align-items: center; }
+.ramp i { width: 22px; height: 10px; display: block; }
+.ramp i:first-child { border-radius: 3px 0 0 3px; } .ramp i:last-child { border-radius: 0 3px 3px 0; }
+.legend .delta { font-family: var(--mono); color: var(--ink); }
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+@media (max-width: 1100px) { .stage { grid-template-columns: 1fr; } }
+.tree-scroll { background: var(--surface); border-radius: 14px; overflow-x: auto; min-width: 0; }
+.tree { position: relative; width: 1000px; margin: 0 auto; }
+.tree svg { position: absolute; inset: 0; overflow: visible; }
+.col-label { position: absolute; top: 18px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.col-label b { display: block; color: var(--ink); font-family: var(--display); font-size: 13px; letter-spacing: 0; text-transform: none; font-weight: 650; }
+.node {
+  position: absolute; height: 30px; display: flex; align-items: center; gap: 8px; padding: 0 10px 0 8px;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; cursor: pointer;
+  font: 500 13px/1.1 var(--display); color: var(--ink); text-align: left; white-space: nowrap;
+  transition: opacity .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.node.tall { height: 44px; white-space: normal; line-height: 1.2; font-size: 12.5px; }
+.node:hover { border-color: var(--edge); }
+.node:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.node .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.node .dot.na { background: transparent; box-shadow: inset 0 0 0 1.5px var(--muted); }
+.node .nm { overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+.node .dl { font-family: var(--mono); font-size: 12px; color: var(--ink-2); flex: none; }
+.node .warn { font-size: 11px; color: var(--muted); flex: none; }
+.node.sel { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.tree.focus .node.dim { opacity: .28; }
+.tree path { fill: none; stroke: var(--edge); stroke-width: 1.5; transition: stroke .18s ease, opacity .18s ease, stroke-width .18s ease; }
+.tree path.cite { stroke-width: 1; opacity: .9; }
+.tree.focus path { opacity: .22; }
+.tree.focus path.on { opacity: 1; stroke: var(--ink); stroke-width: 2; }
+
+/* Inspector */
+.inspector { background: var(--surface); border-radius: 14px; padding: 22px 22px 20px; display: grid; gap: 16px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+@media (max-width: 1100px) { .inspector { position: static; } }
+.inspector .tier { display: flex; gap: 10px; align-items: center; }
+.inspector h3 { font-size: 24px; font-weight: 750; letter-spacing: -0.015em; line-height: 1.1; }
+.inspector .verdict { color: var(--ink-2); font-size: 14px; margin: 0; }
+.chain { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; font-size: 12.5px; }
+.chain button { all: unset; cursor: pointer; padding: 2px 8px; border-radius: 999px; background: var(--bg); color: var(--ink); }
+.chain button:focus-visible { outline: 2px solid var(--focus); }
+.chain button.cur { background: var(--ink); color: var(--surface); }
+.chain .arr { color: var(--muted); }
+.inspector h4 { margin: 0 0 6px; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.inspector ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 13.5px; line-height: 1.45; }
+.inspector ul li::marker { color: var(--muted); }
+.note { font-size: 12.5px; color: var(--ink-2); background: var(--bg); border-radius: 8px; padding: 9px 11px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); font-family: var(--mono); }
+.meta a { color: var(--focus); text-decoration: none; } .meta a:hover { text-decoration: underline; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11.5px; padding: 3px 8px; border-radius: 999px; background: var(--bg); color: var(--ink-2); }
+.badge i { width: 8px; height: 8px; border-radius: 50%; display: block; }
+
+/* Matrix */
+.matrix-head { display: grid; gap: 8px; max-width: 900px; }
+.matrix-head p { margin: 0; color: var(--ink-2); }
+.mx-scroll { background: var(--surface); border-radius: 14px; overflow-x: auto; padding: 8px 8px 12px; position: relative; }
+table.mx { border-collapse: separate; border-spacing: 2px; width: 100%; min-width: 820px; font-size: 12.5px; }
+.mx th { font-weight: 600; text-align: left; padding: 10px 10px 8px; vertical-align: bottom; }
+.mx thead th { font-size: 12px; color: var(--ink-2); }
+.mx thead th small { display: block; font-weight: 400; color: var(--muted); font-size: 11px; margin-top: 2px; }
+.mx tbody th { font-weight: 600; font-size: 13px; white-space: nowrap; padding: 0 14px 0 8px; }
+.mx tbody th small { display: block; font-family: var(--mono); font-weight: 400; font-size: 10.5px; color: var(--muted); letter-spacing: .04em; }
+.mx td { border-radius: 4px; padding: 9px 10px; line-height: 1.25; cursor: default; height: 42px; }
+.mx td.na { background: var(--na); color: var(--na-ink); }
+.mx tr.grp th { padding: 18px 8px 6px; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.mx td:hover { box-shadow: inset 0 0 0 2px var(--surface), 0 0 0 1.5px var(--ink); }
+.tip { position: absolute; pointer-events: none; z-index: 5; max-width: 280px; background: var(--ink); color: var(--surface); font-size: 12.5px; line-height: 1.4; padding: 9px 11px; border-radius: 8px; box-shadow: 0 6px 24px rgba(0,0,0,.18); }
+.tip b { display: block; font-size: 11px; font-family: var(--mono); font-weight: 500; opacity: .75; margin-bottom: 3px; letter-spacing: .04em; }
+footer { color: var(--muted); font-size: 12.5px; display: grid; gap: 6px; max-width: 900px; }
+footer p { margin: 0; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Generative AI in manuscript preparation · surveyed October 2026</div>
+    <h1>Who sets the rule you <span>actually</span> have to follow?</h1>
+    <p>AI-use policies for clinical and biomedical informatics venues cascade through four layers. Each layer inherits the one above and adds its own requirements, and in a conflict the strictest applicable layer binds you. Select any node to trace its lineage and see what that layer adds.</p>
+  </header>
+
+  <section class="floor" aria-labelledby="floor-h">
+    <div class="eyebrow" id="floor-h">The common floor · every venue surveyed agrees</div>
+    <ol>
+      <li><b>No AI authors</b><span>AI can't take responsibility, declare conflicts or hold copyright (COPE's reasoning).</span></li>
+      <li><b>Humans are accountable</b><span>Including fabricated references, plagiarism and errors in AI output.</span></li>
+      <li><b>Research use goes in Methods</b><span>Described well enough to reproduce.</span></li>
+      <li><b>Hiding it is misconduct</b><span>Undisclosed substantive use can lead to rejection, correction or retraction.</span></li>
+      <li><b>No public tools for review</b><span>Reviewers may not upload confidential manuscripts to unsecured AI.</span></li>
+    </ol>
+  </section>
+
+  <section style="display:grid;gap:16px" aria-labelledby="cascade-h">
+    <div class="cascade-head">
+      <div style="display:grid;gap:6px">
+        <div class="eyebrow">The cascade</div>
+        <h2 id="cascade-h">Framework → publisher → journal → article type</h2>
+      </div>
+      <div class="legend" aria-label="Legend">
+        <span>Overall strictness</span>
+        <span class="ramp" aria-hidden="true"><i style="background:var(--s1)"></i><i style="background:var(--s2)"></i><i style="background:var(--s3)"></i><i style="background:var(--s4)"></i><i style="background:var(--s5)"></i></span>
+        <span>permissive → restrictive</span>
+        <span><span class="delta">▲</span> stricter than parent · <span class="delta">▼</span> looser · <span class="delta">≠</span> inconsistent · <span class="delta">⚠</span> partly unverified</span>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="tree-scroll"><div class="tree" id="tree"><svg id="edges" aria-hidden="true"></svg></div></div>
+      <aside class="inspector" id="insp" aria-live="polite"></aside>
+    </div>
+  </section>
+
+  <section style="display:grid;gap:16px" aria-labelledby="mx-h">
+    <div class="matrix-head">
+      <div class="eyebrow">Same policies, by rule</div>
+      <h2 id="mx-h">Where each policy-setter lands on five rules</h2>
+      <p>Darker cells are more restrictive for authors (or reviewers). Grey means the policy doesn't address that rule or I couldn't verify it. Scores are my reading of the policy text, so hover a cell to see the wording behind it.</p>
+    </div>
+    <div class="mx-scroll" id="mxwrap"><table class="mx" id="mx"></table><div class="tip" id="tip" hidden></div></div>
+  </section>
+
+  <footer>
+    <p>Sources: official policy pages of ICMJE (Jan 2026), COPE, WAME, STM, Springer Nature, Elsevier (June 2026), OUP, JMIR, Thieme, PLOS, CSHL Press, JAMA Network (Sept 2026), NEJM Group, BMJ, AAAS/Science (policy page via Jun 2026 archive, guidelines PDF direct), Nature (nature.com), The Lancet (Aug 2026), and the 2026–27 calls for NeurIPS, ICML, ICLR, ACL/ARR, CHIL, ISMB/ISCB, PSB, AMIA and ACM. Policies changed repeatedly in 2025–26, so check the venue's own page right before you submit.</p>
+    <p>⚠ marks rules seen only through search excerpts or third-party copies: Cell Press pages, Genome Biology/BMC, the Briefings ISCB clause, NEJM and Lancet reviewer rules, and AMIA conference details.</p>
+  </footer>
+</div>
+
+<script>
+// Data is injected at build time from data/*.yaml (see build.py).
+const DATA = /*@DATA@*/null;
+const N = DATA.nodes;
+const byId = Object.fromEntries(N.map(n => [n.id, n]));
+N.forEach(n => { n.par = [...(n.p ? [n.p] : []), ...(n.parents || [])]; n.kids = []; });
+N.forEach(n => n.par.forEach(p => byId[p].kids.push(n.id)));
+
+// ---- layout
+const COLX = [24, 236, 486, 790], COLW = [150, 170, 240, 186];
+const TOP = 86, ROW = 38;
+const leaves = N.filter(n => n.c === 2);
+leaves.forEach((n, i) => n.y = TOP + i * ROW);
+const pubs = N.filter(n => n.c === 1);
+pubs.forEach(n => { const ys = n.kids.filter(k => byId[k].c === 2).map(k => byId[k].y); n.y = ys.reduce((a, b) => a + b, 0) / ys.length; });
+// spread publishers so pills never collide
+for (let i = 1; i < pubs.length; i++) if (pubs[i].y < pubs[i-1].y + ROW) pubs[i].y = pubs[i-1].y + ROW;
+N.filter(n => n.c === 3).forEach(n => n.y = byId[n.p].y - 7);
+const fw = N.filter(n => n.c === 0);
+fw.forEach(n => { const ys = n.kids.map(k => byId[k].y); n.y = ys.length ? ys.reduce((a, b) => a + b, 0) / ys.length : null; });
+fw.sort((a, b) => (a.y ?? 1e9) - (b.y ?? 1e9));
+let last = TOP - ROW * 1.4;
+fw.forEach(n => { if (n.y == null || n.y < last + ROW * 1.4) n.y = Math.max(n.y ?? 0, last + ROW * 1.4); last = n.y; });
+const H = TOP + leaves.length * ROW + 20;
+
+const tree = document.getElementById('tree'), svg = document.getElementById('edges');
+tree.style.height = H + 'px';
+svg.setAttribute('viewBox', `0 0 1000 ${H}`); svg.setAttribute('width', 1000); svg.setAttribute('height', H);
+[['Tier 1', 'Frameworks'], ['Tier 2', 'Publishers'], ['Tier 3', 'Journals'], ['Tier 4', 'Article types']].forEach(([t, l], i) => {
+  const d = document.createElement('div'); d.className = 'col-label'; d.style.left = COLX[i] + 'px'; d.innerHTML = `${t}<b>${l}</b>`; tree.appendChild(d);
+});
+const sc = s => s == null ? null : `var(--s${s})`;
+const nodeH = n => n.c === 3 ? 44 : 30;
+N.forEach(n => {
+  const b = document.createElement('button'); b.type = 'button';
+  b.className = 'node' + (n.c === 3 ? ' tall' : ''); b.dataset.id = n.id;
+  b.style.left = COLX[n.c] + 'px'; b.style.top = (n.y - nodeH(n) / 2) + 'px'; b.style.width = COLW[n.c] + 'px';
+  const warn = (n.note || '').includes('⚠') && n.d !== '⚠';
+  b.innerHTML = `<span class="dot${n.s == null ? ' na' : ''}" style="${n.s ? 'background:' + sc(n.s) : ''}"></span><span class="nm">${n.name}${n.sub ? `<br><span style="color:var(--muted);font-size:11px">${n.sub}</span>` : ''}</span>${n.d && n.d !== '=' ? `<span class="dl">${n.d}</span>` : ''}${warn ? '<span class="warn">⚠</span>' : ''}`;
+  b.setAttribute('aria-label', `${n.name}, ${n.tier}${n.s ? ', strictness ' + n.s + ' of 5' : ''}`);
+  b.addEventListener('mouseenter', () => show(n.id, false));
+  b.addEventListener('mouseleave', () => show(pinned, false));
+  b.addEventListener('focus', () => show(n.id, true));
+  b.addEventListener('click', () => show(n.id, true));
+  n.el = b; tree.appendChild(b);
+});
+const E = [];
+N.forEach(n => n.par.forEach(pid => {
+  const p = byId[pid];
+  const x1 = COLX[p.c] + COLW[p.c], y1 = p.y, x2 = COLX[n.c], y2 = n.y, mx = (x1 + x2) / 2;
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
+  const binding = n.p === pid;
+  path.setAttribute('class', binding ? '' : 'cite');
+  if ((n.weak || []).includes(pid)) path.style.opacity = .5;
+  svg.appendChild(path); E.push({ from: pid, to: n.id, el: path });
+}));
+
+function lineage(id) {
+  const up = new Set(), down = new Set();
+  (function a(i) { byId[i].par.forEach(p => { up.add(p); a(p); }); })(id);
+  (function d(i) { byId[i].kids.forEach(k => { down.add(k); d(k); }); })(id);
+  return { up, down, all: new Set([id, ...up, ...down]) };
+}
+// primary chain: walk binding parent; prepend a framework if one is cited along the way
+function chain(id) {
+  const out = []; let cur = byId[id];
+  while (cur) { out.unshift(cur.id); cur = cur.p ? byId[cur.p] : (cur.parents && cur.parents.length && byId[cur.parents[0]].c < cur.c ? byId[cur.parents[0]] : null); }
+  return out;
+}
+const insp = document.getElementById('insp');
+let pinned = 'ldh';
+function show(id, pin) {
+  if (pin) pinned = id;
+  const n = byId[id], L = lineage(id);
+  tree.classList.add('focus');
+  N.forEach(m => { m.el.classList.toggle('dim', !L.all.has(m.id)); m.el.classList.toggle('sel', m.id === pinned); });
+  E.forEach(e => e.el.classList.toggle('on', L.all.has(e.from) && L.all.has(e.to)));
+  const ch = chain(id);
+  const inh = n.par.map(p => byId[p].name);
+  const deltaTxt = { '▲': 'Stricter than parent', '▼': 'Looser than parent', '≠': 'Inconsistent with parent', '=': 'Same as parent', '⚠': 'Unverified' }[n.d];
+  insp.innerHTML = `
+    <div class="tier"><span class="eyebrow">${n.tier}</span>${n.s ? `<span class="badge"><i style="background:${sc(n.s)}"></i>strictness ${n.s}/5</span>` : '<span class="badge">not scored</span>'}</div>
+    <div style="display:grid;gap:8px"><h3>${n.name}</h3><p class="verdict">${n.verdict}</p></div>
+    ${ch.length > 1 ? `<div><h4>Lineage</h4><div class="chain">${ch.map((c, i) => `${i ? '<span class="arr">→</span>' : ''}<button type="button" data-go="${c}" class="${c === id ? 'cur' : ''}">${byId[c].name}</button>`).join('')}</div></div>` : ''}
+    <div><h4>${n.c === 0 ? 'What it sets' : 'What this layer adds'}</h4><ul>${n.rules.map(r => `<li>${r}</li>`).join('')}</ul></div>
+    ${n.note ? `<div class="note">${n.note}</div>` : ''}
+    <div class="meta">${deltaTxt ? `<span>${n.d} ${deltaTxt}</span>` : ''}${inh.length ? `<span>inherits: ${inh.join(', ')}</span>` : ''}${n.kids.length ? `<span>${n.kids.length} downstream</span>` : ''}${n.date ? `<span>${n.date}</span>` : ''}<a href="${n.url}" target="_blank" rel="noopener">source ↗</a></div>`;
+  insp.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => { show(b.dataset.go, true); byId[b.dataset.go].el.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }));
+}
+show(pinned, true);
+
+// ---- matrix
+const COLS = DATA.columns;
+const LV = [null, 1, 2, 4, 5]; // 4-level scores mapped onto the validated 5-step ramp
+const M = DATA.matrix;
+const mx = document.getElementById('mx');
+let h = '<thead><tr><th></th>' + COLS.map(c => `<th scope="col">${c[1]}<small>${c[2]}</small></th>`).join('') + '</tr></thead><tbody>';
+M.forEach(r => {
+  if (r.length === 1) { h += `<tr class="grp"><th colspan="6">${r[0]}</th></tr>`; return; }
+  h += `<tr><th scope="row">${r[0]}<small>${r[1]}</small></th>`;
+  r.slice(2).forEach((c, i) => {
+    const v = c[0];
+    const style = v ? `background:var(--s${LV[v]});color:var(--on-s${LV[v]})` : '';
+    h += `<td class="${v ? '' : 'na'}" style="${style}" data-r="${r[0]}" data-c="${COLS[i][1]}" data-v="${v ?? '–'}">${c[1]}</td>`;
+  });
+  h += '</tr>';
+});
+mx.innerHTML = h + '</tbody>';
+const tip = document.getElementById('tip'), wrap = document.getElementById('mxwrap');
+const LAB = { 1: 'Permissive', 2: 'Moderate', 3: 'Restrictive', 4: 'Most restrictive', '–': 'Not addressed / unverified' };
+mx.addEventListener('mousemove', e => {
+  const td = e.target.closest('td'); if (!td) { tip.hidden = true; return; }
+  tip.innerHTML = `<b>${td.dataset.r} · ${td.dataset.c} · ${LAB[td.dataset.v]}</b>${td.textContent}`;
+  tip.hidden = false;
+  const wr = wrap.getBoundingClientRect(), tr = td.getBoundingClientRect();
+  let x = tr.left - wr.left + wrap.scrollLeft, y = tr.bottom - wr.top + 6;
+  x = Math.min(x, wrap.scrollLeft + wr.width - 290);
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+});
+mx.addEventListener('mouseleave', () => tip.hidden = true);
+</script>
