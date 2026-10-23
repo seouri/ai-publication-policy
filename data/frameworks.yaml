@@ -5,7 +5,7 @@ frameworks:
 - id: icmje
   name: ICMJE
   strictness: 3
-  date: Jan 2026
+  date: Jan 2026 · current
   url: https://www.icmje.org/icmje-recommendations.pdf
   verdict: The baseline for clinical journals. Members and adopters inherit it wholesale.
   rules:
@@ -18,18 +18,19 @@ frameworks:
 - id: cope
   name: COPE
   strictness: 2
-  date: Feb 2023
+  date: Feb 2023 · current as of Oct 2026
   url: https://publicationethics.org/guidance/cope-position/authorship-and-ai-tools
   verdict: The ethics baseline most publishers cite. Short, and silent on reviewers and exemptions.
   rules:
   - 'AI is not an author: it can''t take responsibility, declare conflicts, or manage copyright'
   - Disclose which tool and how it was used, in Methods or a similar section
   - Authors are liable for any ethics breach, including in AI-produced parts
+  note: Still COPE's current position. The page was moved to COPE's new site in Aug 2024 without text changes. COPE case 26-02 (Mar 2026) advises journals to set clear rules on reviewer AI use, but COPE says case advice is not formal guidance.
 - id: wame
   name: WAME
   strictness: 4
   tier: Cross-publisher framework · advisory
-  date: May 2023
+  date: May 2023 · current as of Oct 2026
   url: https://wame.org/page3.php?id=106
   verdict: The strictest framework on prompts, but advisory. No surveyed journal adopts it verbatim.
   rules:
@@ -42,19 +43,31 @@ frameworks:
   name: STM taxonomy
   strictness: null
   tier: Cross-publisher classification
-  date: Sept 2025
+  date: Sept 2025 · current
   url: https://s3.eu-west-2.amazonaws.com/stm.offloadmedia/wp-content/uploads/2025/04/23020709/STM_AI_Classification_Recs_19_Sept2025-1.pdf
   verdict: A vocabulary, not a rule set. Publishers decide what each category requires.
   rules:
   - Nine categories of use, from language refinement to presenting AI output as original data
   - Research-process AI is out of scope
   - Asks publishers to state whether exact prompts must be reported
-  note: 'Not scored for strictness: it sets no requirements.'
+  note: 'Not scored for strictness: it sets no requirements. STM is now working on the joint Vancouver Standard instead of revising this classification.'
+- id: vancouver
+  name: Vancouver Standard
+  strictness: null
+  tier: Cross-publisher standard · in development
+  date: consultation Jul–Oct 2026
+  url: https://stm-assoc.org/global-reporting-standard-for-ai-disclosure-in-research-first-consultation-is-open/
+  verdict: A planned global reporting standard for AI disclosure from ISC, COPE, STM and the Global Young Academy. No draft text has been published yet.
+  rules:
+  - Launched as a focus track at the World Conference on Research Integrity, Vancouver, May 2026
+  - Second consultation covers what to disclose, where, in what structure, and whether disclosure is mandatory
+  - A refined draft is planned for late 2026 to early 2027
+  note: 'Not scored: it sets no requirements yet. Recheck in early 2027.'
 - id: iscb
   name: ISCB
   strictness: 5
   tier: Scientific society overlay
-  date: Apr 2025
+  date: Apr 2025 · current
   url: https://www.iscb.org/about-iscb/policy-statements-bylaws-and-legal-documents/acceptable-use-of-large-language-models-policy
   verdict: The only policy-setter here that bans LLM drafting outright. It overrides OUP for the journals that adopt it.
   rules:

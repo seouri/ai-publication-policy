@@ -61,10 +61,12 @@ The workflow skips itself while the repository is private, so pushes before goin
 - **Strictness scores.** Both the tree's 1–5 scores and the matrix's 1–4 scores are the maintainers' reading of the policy text, not an official classification. They are there for comparing policies at a glance. The rules text and the source link are what count.
 - **Unscored cells.** A grey matrix cell means the policy doesn't address that rule, or that it couldn't be verified.
 
-Known gaps as of the last survey:
-- Cell Press pages, the Genome Biology/BMC policy, and the Briefings in Bioinformatics ISCB clause were only partly verified.
-- NEJM's image and reviewer rules, and the Lancet reviewer policy, were not verified.
-- AMIA conference details were not verified, and no policy was found for ML4H, MLHC or RECOMB.
+Known gaps as of the last check (October 2026):
+- Cell Press pages are based on search excerpts only, because cell.com blocks automated access and has no archive copies.
+- The Lancet reviewer rule comes from an August 2025 archive, and ACM's reviewer rules were not checked.
+- The legacy LLM wording at Nature Machine Intelligence, Nature Methods, Nature Biotechnology and Nature Biomedical Engineering was last checked before October 2026.
+- The AMIA 2027 Amplify call could not be read.
+- The Vancouver Standard has no published text yet; recheck it in early 2027.
 
 > **Disclaimer.** This is a research aid, not authoritative guidance. Journal policies changed repeatedly in 2025–26, so always check the venue's current author instructions before you submit.
 

@@ -17,14 +17,14 @@ groups:
     img: [null, 'Within scope, no rule']
     rev: [3, Permission before upload]
   - name: COPE
-    sub: Feb 2023
+    sub: Feb 2023 · current
     disc: [2, 'Which tool, how']
     gram: [null, Not addressed]
     draft: [2, 'Allowed, disclosed']
     img: [2, Disclose]
     rev: [null, Not addressed]
   - name: WAME
-    sub: May 2023 · advisory
+    sub: May 2023 · current · advisory
     disc: [4, 'Every prompt, date, version']
     gram: [3, Not exempt]
     draft: [2, 'Allowed, disclosed']
@@ -40,7 +40,7 @@ groups:
 - group: Publishers
   rows:
   - name: Springer Nature
-    sub: ≈ mid-2026
+    sub: Sept 2026
     disc: [3, Risk-tiered declaration]
     gram: [3, Green tier still "describe"]
     draft: [2, 'Amber: oversight + disclose']
@@ -59,10 +59,10 @@ groups:
     gram: [1, Exempt]
     draft: [3, Banned in some sections]
     img: [3, '"Primarily brainstorming"']
-    rev: [null, ⚠ Not verified]
+    rev: [4, 'No AI in review, even for language (2025)']
   - name: Cell Press ⚠
     sub: excerpts
-    disc: [3, Statement + STAR Methods]
+    disc: [3, Statement after Declaration of Interests]
     gram: [2, ⚠ Ambiguous in practice]
     draft: [2, 'Allowed, disclosed']
     img: [2, Explanatory only]
@@ -82,28 +82,28 @@ groups:
     img: [null, Not addressed]
     rev: [4, Banned]
   - name: JMIR
-    sub: edited Sept 2026
-    disc: [4, Full transcripts as appendix]
+    sub: Oct 2026
+    disc: [3, Dedicated statement; transcripts requested]
     gram: [3, No exemption]
     draft: [2, Allowed; quote verbatim text]
     img: [1, Table-of-contents art encouraged]
     rev: [1, Allowed with set disclosure]
   - name: Thieme
-    sub: '2026'
+    sub: mid-2026
     disc: [3, 'Mandatory, even "none"']
     gram: [3, No exemption]
     draft: [2, 'Allowed, disclosed']
     img: [4, Banned without exception form]
     rev: [null, ⚠ Not found]
   - name: PLOS
-    sub: undated
+    sub: Sept 2026
     disc: [3, 'Tool, sections, verification']
     gram: [1, Exempt (+ clarity)]
     draft: [2, 'Allowed, disclosed']
     img: [1, Disclose in legend]
     rev: [3, Cannot review; copyedit only]
   - name: CSHL Press
-    sub: Genome Research
+    sub: Genome Research · Aug 2026
     disc: [3, 'Tool, version, full description']
     gram: [1, Exempt]
     draft: [2, 'Allowed, disclosed']
@@ -131,14 +131,14 @@ groups:
     img: [null, Not stated]
     rev: [1, Disclose; AI Fast Track]
   - name: Science
-    sub: AAAS · Jun 2026
+    sub: AAAS · Dec 2025 table
     disc: [2, Model + version; Methods or Ack]
     gram: [1, 'Exempt (also references, formatting)']
     draft: [2, Allowed; declare in Ack]
     img: [4, Illustrative AI figures banned]
     rev: [3, No manuscript input; polish only]
   - name: BMJ
-    sub: reviewed 6-monthly
+    sub: Sept 2023 · unchanged
     disc: [3, 'What, why, how; inputs/outputs']
     gram: [3, No exemption]
     draft: [2, 'Allowed, disclosed']
@@ -154,21 +154,21 @@ groups:
     img: [null, Not addressed]
     rev: [4, Not acceptable]
   - name: ICLR 2027
-    sub: desk-rejects
-    disc: [3, Required section + form]
-    gram: [null, Task lists instead]
-    draft: [2, 'Allowed, disclosed']
+    sub: LLM falsehoods → desk reject
+    disc: [2, Required section + form]
+    gram: [2, No exemption listed]
+    draft: [2, Allowed; disclosure recommended]
     img: [1, Recommended disclosure]
-    rev: [2, Allowed; submit full logs]
+    rev: [1, Allowed; submit own assessment + LLM logs]
   - name: CHIL 2027
     sub: follows ICLR
     disc: [3, 'Tool, version, task, verification']
     gram: [1, Exempt]
     draft: [2, 'Allowed, disclosed']
     img: [null, Not stated]
-    rev: [null, Not found]
+    rev: [null, Reviewer policy not posted yet]
   - name: ACL / ARR
-    sub: checklist E1
+    sub: misfiled checklist → desk reject
     disc: [2, Acknowledgements + checklist]
     gram: [1, Exempt]
     draft: [2, 'Allowed, disclosed']
@@ -178,9 +178,9 @@ groups:
     sub: Code of Conduct
     disc: [1, Method use only]
     gram: [1, Exempt]
-    draft: [2, Main track allowed; position track human-written]
-    img: [null, Not stated]
-    rev: [3, Banned unless sanctioned]
+    draft: [3, 'Position track: human-written']
+    img: [1, No disclosure needed]
+    rev: [2, Sanctioned LLM only]
   - name: ICML 2026
     sub: desk-rejected 497
     disc: [1, Encouraged only]
@@ -192,13 +192,34 @@ groups:
     sub: May 2026
     disc: [1, Writing no longer required]
     gram: [1, Exempt]
+    draft: [1, 'Allowed, no disclosure']
+    img: [2, AI figures described in Methods]
+    rev: [null, ⚠ Not verified]
+  - name: AMIA Symposium 2026
+    sub: 2027 Amplify call unread
+    disc: [3, 'Type, parameters, impact; paper + form']
+    gram: [null, Covers research use only]
+    draft: [null, Not addressed]
+    img: [null, Not addressed]
+    rev: [null, Not found]
+  - name: ML4H 2026
+    sub: unverified refs → retraction
+    disc: [2, Significant LLM use in setup]
+    gram: [1, Exempt]
     draft: [2, Allowed]
-    img: [null, Not stated]
-    rev: [3, No non-confidential tools]
-  - name: AMIA Symposium ⚠
-    sub: snippets
-    disc: [3, 'Type, parameters, impact']
-    gram: [null, ⚠ Not verified]
-    draft: [null, ⚠]
-    img: [null, ⚠]
-    rev: [null, ⚠]
+    img: [null, Not addressed]
+    rev: [4, 'Banned, even local models']
+  - name: MLHC 2026
+    sub: hallucinated refs → reject
+    disc: [null, No disclosure rule]
+    gram: [1, No disclosure needed]
+    draft: [1, 'Allowed, no disclosure']
+    img: [1, 'Allowed, no disclosure']
+    rev: [null, Not found]
+  - name: RECOMB 2027
+    sub: no AI policy
+    disc: [null, No AI policy]
+    gram: [null, No AI policy]
+    draft: [null, No AI policy]
+    img: [null, No AI policy]
+    rev: [null, No AI policy]
