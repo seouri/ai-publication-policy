@@ -81,7 +81,7 @@ All scores are judgement calls. Apply this rubric consistently, and when you sco
 - 5: bans AI drafting, or a whole article type.
 - `null`: the entry sets no requirements (e.g. the STM taxonomy), or is too unverified to score.
 
-**Matrix cells (1–4, or `null` when not addressed or unverified):**
+**Matrix cells (1–4, or `null` when not addressed or unverified).** The `levels` labels in `data/matrix.yaml` are the canonical wording of this rubric and are shown in node cards, so keep them in sync with the table below. When a journal's rules differ from its publisher's row, give it its own row with `nodes: [journal-id]`. Otherwise its card will show the publisher's scores.
 
 | Column | 1 | 2 | 3 | 4 |
 |---|---|---|---|---|

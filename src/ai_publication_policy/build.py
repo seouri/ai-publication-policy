@@ -118,28 +118,40 @@ def load_nodes(data_dir: Path) -> list[dict]:
     return nodes
 
 
-def load_matrix(data_dir: Path) -> tuple[list, list]:
+def load_matrix(data_dir: Path, node_ids: set[str]) -> tuple[list, list, dict]:
+    """Columns, grouped rows for the matrix table, and each linked node's row for the inspector."""
     raw = _load(data_dir / "matrix.yaml")
     columns = raw.get("columns", [])
     keys = [c["key"] for c in columns]
-    out = []
+    for c in columns:
+        levels = c.get("levels", [])
+        if not (isinstance(levels, list) and 1 <= len(levels) <= 4 and all(isinstance(x, str) for x in levels)):
+            raise DataError(f"matrix.columns[{c.get('key')}]: levels must be a list of 1-4 labels, one per score")
+    out, scores = [], {}
     for g in raw.get("groups", []):
         out.append([g["group"]])
         for row in g.get("rows", []):
             where = f"matrix[{g['group']}/{row.get('name')}]"
-            extra = set(row) - {"name", "sub", *keys}
+            extra = set(row) - {"name", "sub", "nodes", *keys}
             if extra:
                 raise DataError(f"{where}: unknown column(s) {sorted(extra)}")
             cells = []
-            for k in keys:
+            for col, k in zip(columns, keys):
                 cell = row.get(k, [None, "Not stated"])
                 if not (isinstance(cell, list) and len(cell) == 2):
                     raise DataError(f"{where}.{k}: cell must be [score, text]")
-                if cell[0] is not None and cell[0] not in range(1, 5):
-                    raise DataError(f"{where}.{k}: score must be 1-4 or null")
+                if cell[0] is not None and cell[0] not in range(1, len(col["levels"]) + 1):
+                    raise DataError(f"{where}.{k}: score must be 1-{len(col['levels'])} or null")
                 cells.append(cell)
             out.append([row["name"], row.get("sub", ""), *cells])
-    return [[c["key"], c["label"], c.get("hint", "")] for c in columns], out
+            for nid in row.get("nodes", []):
+                if nid not in node_ids:
+                    raise DataError(f"{where}: nodes lists unknown id '{nid}'")
+                if nid in scores:
+                    raise DataError(f"{where}: node '{nid}' is already linked to row '{scores[nid]['row']}'")
+                scores[nid] = {"row": row["name"], "cells": cells}
+    cols = [[c["key"], c["label"], c.get("hint", ""), c["levels"]] for c in columns]
+    return cols, out, scores
 
 
 def load_survey_date(data_dir: Path) -> dt.date:
@@ -156,11 +168,11 @@ def _survey_html(day: dt.date) -> str:
 
 def build(data_dir: Path, standalone: bool = False) -> str:
     nodes = load_nodes(data_dir)
-    columns, matrix = load_matrix(data_dir)
+    columns, matrix, scores = load_matrix(data_dir, {n["id"] for n in nodes})
     template = files("ai_publication_policy").joinpath("template.html").read_text(encoding="utf-8")
     if MARKER not in template:
         raise DataError("template.html is missing the data marker")
-    payload = json.dumps({"nodes": nodes, "columns": columns, "matrix": matrix}, ensure_ascii=False, indent=1)
+    payload = json.dumps({"nodes": nodes, "columns": columns, "matrix": matrix, "scores": scores}, ensure_ascii=False, indent=1)
     # Keep "</script>" inside a string from closing the page's script element.
     payload = payload.replace("</", "<\\/")
     if SURVEY_MARKER not in template:

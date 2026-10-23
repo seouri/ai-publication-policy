@@ -21,7 +21,7 @@ The scope is clinical and biomedical informatics venues: about 40 frameworks, pu
 - **The cascade.** A tree running left to right through the four tiers.
   - Each node is colored by overall strictness, from 1 to 5.
   - Each node is marked if it is stricter than its parent (▲), looser (▼), inconsistent with it (≠), or only partly verified (⚠).
-  - Click a node to highlight its lineage and open a panel showing what that layer adds, with a link to the source.
+  - Click a node to highlight its lineage and open a panel showing an at-a-glance verdict for each of the five rules, what that layer adds, and a link to the source.
 - **The strictness matrix.** Frameworks, publishers and conferences scored against five rules: how much you must disclose, whether grammar edits are exempt, AI drafting, AI images, and reviewer AI use. Hover a cell to see the policy wording behind its score.
 
 The page is a single self-contained HTML file, with no server and no external scripts beyond Google Fonts. It supports light and dark mode, and the strictness palette passes checks for color-vision deficiency and contrast.
@@ -135,8 +135,12 @@ Add an entry to `frameworks.yaml`, then put its id in the `cites:` list of each 
 ### Matrix
 
 Add a row under the right group in `matrix.yaml`. Each column key takes `[score, text]`:
-- `score` runs from 1 (permissive) to 4 (most restrictive). Use `null` when the policy doesn't address the rule or it couldn't be verified.
+- `score` runs from 1 (permissive) up to the column's number of `levels` (most restrictive). Use `null` when the policy doesn't address the rule or it couldn't be verified.
 - A column you leave out renders as `[null, "Not stated"]`.
+
+Each column's `levels` names its scores in plain words ("Allowed if disclosed", "Banned", …). These words label the "At a glance" meters in a node's card.
+
+Set `nodes: [id, …]` on a row to link it to tree nodes. A node's card shows its own linked row. If it has none, it shows the nearest publisher row up its chain, marked "inherited from".
 
 ### Pages that block automated fetching
 

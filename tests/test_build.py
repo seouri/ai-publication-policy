@@ -89,3 +89,19 @@ def test_survey_date_must_be_a_day(data_copy, value):
     (data_copy / "survey.yaml").write_text(f"last_surveyed: {value}\n")
     with pytest.raises(DataError, match="last_surveyed"):
         build(data_copy)
+
+
+def test_matrix_rows_link_to_nodes(data_copy):
+    scores = payload(build(DATA))["scores"]
+    assert scores["els"]["row"] == "Elsevier" and len(scores["els"]["cells"]) == 5
+    edit(data_copy / "matrix.yaml", lambda d: d["groups"][0]["rows"][0].update(nodes=["nope"]))
+    with pytest.raises(DataError, match="unknown id 'nope'"):
+        build(data_copy)
+
+
+def test_score_cannot_exceed_column_levels(data_copy):
+    def bad(d):
+        d["groups"][0]["rows"][0]["gram"] = [4, "x"]  # gram has three levels
+    edit(data_copy / "matrix.yaml", bad)
+    with pytest.raises(DataError, match="score must be 1-3"):
+        build(data_copy)

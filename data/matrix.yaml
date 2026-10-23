@@ -1,15 +1,34 @@
-# Strictness matrix. Each cell is [score, text]; score 1 (permissive) to 4 (most restrictive), or null if not addressed/unverified.
+# Strictness matrix. Each cell is [score, text]; score 1 (permissive) up to the column's number of
+# levels (most restrictive), or null if not addressed/unverified. `levels` names each score; they label
+# the "At a glance" meters in the node inspector. A row's `nodes` links it to tree nodes; journals
+# without their own row show their nearest publisher's row.
 
 columns:
-- {key: disc, label: Disclosure depth, hint: what you must report}
-- {key: gram, label: Grammar edits, hint: 'exempt from disclosure?'}
-- {key: draft, label: AI drafting text, hint: how far allowed}
-- {key: img, label: AI images, hint: figures & art}
-- {key: rev, label: Reviewer AI use, hint: peer-review side}
+- key: disc
+  label: Disclosure depth
+  hint: what you must report
+  levels: [Optional or method only, Tool + purpose, Tool + version + details, Prompts or transcripts]
+- key: gram
+  label: Grammar edits
+  hint: 'exempt from disclosure?'
+  levels: [Exempt, Unclear, Must disclose]
+- key: draft
+  label: AI drafting text
+  hint: how far allowed
+  levels: [Encouraged, Allowed if disclosed, Banned for some types, Banned]
+- key: img
+  label: AI images
+  hint: figures & art
+  levels: [Allowed if disclosed, Conditional, Discouraged or limited, Banned by default]
+- key: rev
+  label: Reviewer AI use
+  hint: peer-review side
+  levels: [Allowed if disclosed, Secure tools only, 'No uploads, polish only', Banned]
 groups:
 - group: Frameworks
   rows:
   - name: ICMJE
+    nodes: [icmje]
     sub: Jan 2026
     disc: [3, Tool + version + prompts (research)]
     gram: [2, '"Acceptable", not clearly exempt']
@@ -17,6 +36,7 @@ groups:
     img: [null, 'Within scope, no rule']
     rev: [3, Permission before upload]
   - name: COPE
+    nodes: [cope]
     sub: Feb 2023 · current
     disc: [2, 'Which tool, how']
     gram: [null, Not addressed]
@@ -24,6 +44,7 @@ groups:
     img: [2, Disclose]
     rev: [null, Not addressed]
   - name: WAME
+    nodes: [wame]
     sub: May 2023 · current · advisory
     disc: [4, 'Every prompt, date, version']
     gram: [3, Not exempt]
@@ -31,6 +52,7 @@ groups:
     img: [2, Prompts for illustrations]
     rev: [3, Upload breaches confidentiality]
   - name: ISCB
+    nodes: [iscb]
     sub: Apr 2025 · society
     disc: [2, Label any LLM text]
     gram: [1, Acceptable use]
@@ -40,6 +62,7 @@ groups:
 - group: Publishers
   rows:
   - name: Springer Nature
+    nodes: [sn]
     sub: Sept 2026
     disc: [3, Risk-tiered declaration]
     gram: [3, Green tier still "describe"]
@@ -47,6 +70,7 @@ groups:
     img: [2, Only if verifiable]
     rev: [2, Secure tools; no full reviews]
   - name: Elsevier
+    nodes: [els]
     sub: June 2026
     disc: [3, Published declaration + template]
     gram: [1, Basic checks exempt]
@@ -54,6 +78,7 @@ groups:
     img: [2, Schematics OK; data images never]
     rev: [3, No uploads; private tools only]
   - name: Lancet family
+    nodes: [ldh]
     sub: Aug 2026
     disc: [3, Version; prompts on request]
     gram: [1, Exempt]
@@ -61,6 +86,7 @@ groups:
     img: [3, '"Primarily brainstorming"']
     rev: [4, 'No AI in review, even for language']
   - name: Cell Press
+    nodes: [cell]
     sub: Oct 2026
     disc: [3, 'Statement + STAR Methods; tool, version']
     gram: [1, Exempt (Elsevier rule)]
@@ -68,6 +94,7 @@ groups:
     img: [3, Explanatory only; no AI cover art]
     rev: [3, 'Elsevier: private tools only']
   - name: Oxford UP
+    nodes: [oup]
     sub: JAMIA · NAR
     disc: [2, Cover letter + Methods/Ack]
     gram: [2, Not stated]
@@ -75,13 +102,23 @@ groups:
     img: [1, Disclose]
     rev: [null, No journal-wide rule]
   - name: Bioinformatics
+    nodes: [bioinf]
     sub: OUP + ISCB
     disc: [3, Supplement with details]
     gram: [1, Acceptable use]
     draft: [4, Banned]
     img: [null, Not addressed]
     rev: [4, Banned]
+  - name: Briefings in Bioinformatics
+    nodes: [bib]
+    sub: OUP + ISCB wording
+    disc: [3, Supplement with details]
+    gram: [1, Acceptable use]
+    draft: [4, Banned]
+    img: [null, Not addressed]
+    rev: [null, No reviewer clause]
   - name: JMIR
+    nodes: [jmirp]
     sub: Oct 2026
     disc: [3, Dedicated statement; transcripts requested]
     gram: [3, No exemption]
@@ -89,6 +126,7 @@ groups:
     img: [1, Table-of-contents art encouraged]
     rev: [1, Allowed with set disclosure]
   - name: Thieme
+    nodes: [thieme]
     sub: mid-2026
     disc: [3, 'Mandatory, even "none"']
     gram: [3, No exemption]
@@ -96,6 +134,7 @@ groups:
     img: [4, Banned without exception form]
     rev: [null, ⚠ Not found]
   - name: PLOS
+    nodes: [plos]
     sub: Sept 2026
     disc: [3, 'Tool, sections, verification']
     gram: [1, Exempt (+ clarity)]
@@ -103,6 +142,7 @@ groups:
     img: [1, Disclose in legend]
     rev: [3, Cannot review; copyedit only]
   - name: CSHL Press
+    nodes: [cshl]
     sub: Genome Research · Aug 2026
     disc: [3, 'Tool, version, full description']
     gram: [1, Exempt]
@@ -110,6 +150,7 @@ groups:
     img: [3, Strongly discouraged]
     rev: [3, No chatbot uploads]
   - name: JAMA Network
+    nodes: [jaman]
     sub: Sept 2026
     disc: [3, 'Version, dates, sections; research prompts']
     gram: [1, Exempt]
@@ -117,6 +158,7 @@ groups:
     img: [4, Clinical images banned]
     rev: [3, No chatbot uploads]
   - name: NEJM
+    nodes: [nejmg]
     sub: July 2026
     disc: [2, Cover letter + manuscript]
     gram: [null, Not stated]
@@ -124,6 +166,7 @@ groups:
     img: [null, Not addressed]
     rev: [null, Not addressed]
   - name: NEJM AI
+    nodes: [nejmai]
     sub: May 2026
     disc: [2, Cover letter + manuscript / Ack]
     gram: [null, Not stated]
@@ -131,6 +174,7 @@ groups:
     img: [null, Not stated]
     rev: [1, Disclose; AI Fast Track]
   - name: Science
+    nodes: [aaas]
     sub: AAAS · Dec 2025 table
     disc: [2, Model + version; Methods or Ack]
     gram: [1, 'Exempt (also references, formatting)']
@@ -138,6 +182,7 @@ groups:
     img: [4, Illustrative AI figures banned]
     rev: [3, No manuscript input; polish only]
   - name: BMJ
+    nodes: [bmjg]
     sub: Sept 2023 · unchanged
     disc: [3, 'What, why, how; inputs/outputs']
     gram: [3, No exemption]

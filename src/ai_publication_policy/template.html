@@ -15,6 +15,7 @@
   --rule: #dde1e5;
   --edge: #c5ccd3;
   --focus: #1c5cab;
+  --chip: #cfdcef; --chip-ink: #173a66;
   --accent: #1c5cab;
   --na: #e6e9ec;
   --na-ink: #858d96;
@@ -26,7 +27,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0e1012; --surface: #16181b; --ink: #eef0f2; --ink-2: #b4bcc5; --muted: #7f8892;
-    --rule: #2a2e33; --edge: #3a4048; --focus: #6da7ec; --accent: #6da7ec; --na: #23272c; --na-ink: #7f8892;
+    --rule: #2a2e33; --edge: #3a4048; --focus: #6da7ec; --accent: #6da7ec; --chip: #233243; --chip-ink: #d3e3f7; --na: #23272c; --na-ink: #7f8892;
     --s1: #184f95; --s2: #256abf; --s3: #3987e5; --s4: #6da7ec; --s5: #b7d3f6;
     --on-s1: #ffffff; --on-s2: #ffffff; --on-s3: #ffffff; --on-s4: #0e1012; --on-s5: #0e1012;
     color-scheme: dark;
@@ -34,7 +35,7 @@
 }
 :root[data-theme="dark"] {
   --bg: #0e1012; --surface: #16181b; --ink: #eef0f2; --ink-2: #b4bcc5; --muted: #7f8892;
-  --rule: #2a2e33; --edge: #3a4048; --focus: #6da7ec; --accent: #6da7ec; --na: #23272c; --na-ink: #7f8892;
+  --rule: #2a2e33; --edge: #3a4048; --focus: #6da7ec; --accent: #6da7ec; --chip: #233243; --chip-ink: #d3e3f7; --na: #23272c; --na-ink: #7f8892;
   --s1: #184f95; --s2: #256abf; --s3: #3987e5; --s4: #6da7ec; --s5: #b7d3f6;
   --on-s1: #ffffff; --on-s2: #ffffff; --on-s3: #ffffff; --on-s4: #0e1012; --on-s5: #0e1012;
   color-scheme: dark;
@@ -113,6 +114,17 @@ header.top p { margin: 0; color: var(--ink-2); font-size: 16.5px; max-width: 68c
 .inspector h4 { margin: 0 0 6px; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .inspector ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 13.5px; line-height: 1.45; }
 .inspector ul li::marker { color: var(--muted); }
+.glance { display: grid; gap: 10px; }
+.g-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 12px; align-items: center; }
+.g-lab { justify-self: start; font-size: 12px; font-weight: 650; color: var(--chip-ink); background: var(--chip); padding: 3px 10px; border-radius: 999px; letter-spacing: .01em; }
+.meter { display: inline-flex; gap: 2px; }
+.meter i { width: 14px; height: 8px; background: var(--na); display: block; }
+.meter i:first-child { border-radius: 3px 0 0 3px; } .meter i:last-child { border-radius: 0 3px 3px 0; }
+.g-lvl { grid-column: 1 / -1; font-size: 13.5px; font-weight: 600; line-height: 1.35; }
+.g-lvl.na { color: var(--muted); font-weight: 500; }
+.g-txt { display: block; font-weight: 400; font-size: 12.5px; color: var(--ink-2); }
+.g-from { text-transform: none; letter-spacing: 0; font-family: var(--display); color: var(--ink-2); margin-left: 4px; }
+.g-none { margin: 0; font-size: 13px; color: var(--muted); }
 .note { font-size: 12.5px; color: var(--ink-2); background: var(--bg); border-radius: 8px; padding: 9px 11px; }
 .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); font-family: var(--mono); }
 .meta a { color: var(--focus); text-decoration: none; } .meta a:hover { text-decoration: underline; }
@@ -204,6 +216,8 @@ footer p { margin: 0; }
 // Data is injected at build time from data/*.yaml (see build.py).
 const DATA = /*@DATA@*/null;
 const N = DATA.nodes;
+const COLS = DATA.columns;
+const LV = [null, 1, 2, 4, 5]; // 4-level scores mapped onto the validated 5-step ramp
 const byId = Object.fromEntries(N.map(n => [n.id, n]));
 N.forEach(n => { n.par = [...(n.p ? [n.p] : []), ...(n.parents || [])]; n.kids = []; });
 N.forEach(n => n.par.forEach(p => byId[p].kids.push(n.id)));
@@ -272,6 +286,27 @@ function chain(id) {
 }
 const insp = document.getElementById('insp');
 let pinned = 'ldh';
+// Matrix scores for a node: its own row, else the nearest ancestor's along the publisher chain.
+function scoresFor(id) {
+  for (let n = byId[id]; n; n = n.p ? byId[n.p] : null) {
+    if (DATA.scores[n.id]) return { ...DATA.scores[n.id], own: n.id === id };
+  }
+  return null;
+}
+function glance(id) {
+  const sc = scoresFor(id);
+  if (!sc) return '<div><h4>At a glance</h4><p class="g-none">Not scored in the matrix.</p></div>';
+  const rows = COLS.map((c, i) => {
+    const [v, txt] = sc.cells[i], levels = c[3];
+    const segs = levels.map((_, k) => `<i${v && k < v ? ` style="background:var(--s${LV[v]})"` : ''}></i>`).join('');
+    return `<div class="g-row">
+      <span class="g-lab">${c[1]}</span>
+      <span class="meter" role="img" aria-label="${v ? `${v} of ${levels.length}` : 'not scored'}">${segs}</span>
+      <span class="g-lvl${v ? '' : ' na'}">${v ? levels[v - 1] : 'Not addressed'}<span class="g-txt">${txt}</span></span>
+    </div>`;
+  }).join('');
+  return `<div><h4>At a glance <span class="g-from">${sc.own ? '' : 'inherited from '}${sc.row}</span></h4><div class="glance">${rows}</div></div>`;
+}
 function show(id, pin) {
   if (pin) pinned = id;
   const n = byId[id], L = lineage(id);
@@ -285,6 +320,7 @@ function show(id, pin) {
     <div class="tier"><span class="eyebrow">${n.tier}</span>${n.s ? `<span class="badge"><i style="background:${sc(n.s)}"></i>strictness ${n.s}/5</span>` : '<span class="badge">not scored</span>'}</div>
     <div style="display:grid;gap:8px"><h3>${n.name}</h3><p class="verdict">${n.verdict}</p></div>
     ${ch.length > 1 ? `<div><h4>Lineage</h4><div class="chain">${ch.map((c, i) => `${i ? '<span class="arr">→</span>' : ''}<button type="button" data-go="${c}" class="${c === id ? 'cur' : ''}">${byId[c].name}</button>`).join('')}</div></div>` : ''}
+    ${glance(id)}
     <div><h4>${n.c === 0 ? 'What it sets' : 'What this layer adds'}</h4><ul>${n.rules.map(r => `<li>${r}</li>`).join('')}</ul></div>
     ${n.note ? `<div class="note">${n.note}</div>` : ''}
     <div class="meta">${deltaTxt ? `<span>${n.d} ${deltaTxt}</span>` : ''}${inh.length ? `<span>inherits: ${inh.join(', ')}</span>` : ''}${n.kids.length ? `<span>${n.kids.length} downstream</span>` : ''}${n.date ? `<span>${n.date}</span>` : ''}<a href="${n.url}" target="_blank" rel="noopener">source ↗</a></div>`;
@@ -293,8 +329,6 @@ function show(id, pin) {
 show(pinned, true);
 
 // ---- matrix
-const COLS = DATA.columns;
-const LV = [null, 1, 2, 4, 5]; // 4-level scores mapped onto the validated 5-step ramp
 const M = DATA.matrix;
 const mx = document.getElementById('mx');
 let h = '<thead><tr><th></th>' + COLS.map(c => `<th scope="col">${c[1]}<small>${c[2]}</small></th>`).join('') + '</tr></thead><tbody>';
