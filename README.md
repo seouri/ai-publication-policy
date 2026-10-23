@@ -78,9 +78,13 @@ data/
   publishers.yaml   Tier 2 publishers, each nesting its Tier 3 journals and Tier 4 article_rules
   matrix.yaml       strictness matrix (columns + grouped rows)
   survey.yaml       date of the last survey (set by hand)
+sources/
+  blocked.yaml      policy pages that block automated fetching
+  inbox/            your browser-saved copies (gitignored)
 src/ai_publication_policy/
   template.html     page markup, styles and rendering script; data is injected at the /*@DATA@*/ marker
   build.py          loads and validates the YAML, renders the page
+  sources.py        `sources todo` and `sources extract` for browser-saved pages
 tests/              build and validation tests
 .github/workflows/  GitHub Pages deployment
 ```
@@ -135,6 +139,24 @@ Add an entry to `frameworks.yaml`, then put its id in the `cites:` list of each 
 Add a row under the right group in `matrix.yaml`. Each column key takes `[score, text]`:
 - `score` runs from 1 (permissive) to 4 (most restrictive). Use `null` when the policy doesn't address the rule or it couldn't be verified.
 - A column you leave out renders as `[null, "Not stated"]`.
+
+### Pages that block automated fetching
+
+Some publisher sites (science.org, cell.com, thelancet.com, nejm.org, amia.org and others) refuse scripted downloads. These are listed in `sources/blocked.yaml`. To collect them, you only need to save each page in your browser:
+
+```sh
+uv run sources todo --open   # opens every page still needed in your browser
+```
+
+In each tab, press **Cmd/Ctrl+S** and save into `sources/inbox/`. Use the format "Webpage, HTML Only" in Chrome or Edge, "Web Page, HTML only" in Firefox, or "Page Source" in Safari. The save dialog remembers the folder after the first save.
+
+```sh
+uv run sources extract       # saved pages → sources/inbox/extracted/*.txt
+```
+
+`extract` finds each page's source URL and writes a text file listing the AI-related passages first, followed by the full text. It also reports which blocked pages are still missing. If a saved file turns out to be a bot-check page ("Just a moment…"), it is skipped with a warning. Let the page finish loading and save it again. Saved PDFs are copied across unchanged.
+
+`sources/inbox/` is gitignored, so saved copies of publisher pages are never committed.
 
 ### Survey date
 

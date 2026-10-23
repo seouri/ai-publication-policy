@@ -15,6 +15,7 @@ dependencies = [
 
 [project.scripts]
 build-page = "ai_publication_policy:main"
+sources = "ai_publication_policy.sources:main"
 
 [build-system]
 requires = ["uv_build>=0.13.5,<0.14.0"]

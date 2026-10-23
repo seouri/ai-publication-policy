@@ -1,0 +1,51 @@
+# Policy pages that block automated retrieval (bot checks, 403s, login redirects).
+# `uv run sources todo --open` opens each one in your browser so you can save it into
+# sources/inbox/; `uv run sources extract` then turns the saved pages into text.
+# Remove an entry once the site can be fetched normally again.
+
+pages:
+- url: https://www.science.org/content/page/science-journals-editorial-policies
+  for: AAAS / Science
+  why: Cloudflare challenge; Wayback copies stop at Jun 2026
+- url: https://www.cell.com/cell-reports-medicine/information-for-authors/journal-policies
+  for: Cell Press
+  why: Cloudflare challenge; never archived
+- url: https://www.cell.com/patterns/information-for-authors/journal-policies
+  for: Cell Press
+  why: Cloudflare challenge; never archived
+- url: https://www.cell.com/cell-systems/information-for-authors/journal-policies
+  for: Cell Press
+  why: Cloudflare challenge; never archived
+- url: https://www.thelancet.com/peer-review
+  for: Lancet family (reviewer rule)
+  why: 403; latest archive is Aug 2025
+- url: https://www.thelancet.com/editorial-policies
+  for: Lancet family
+  why: '403'
+- url: https://ai.nejm.org/about/editorial-policies
+  for: NEJM AI
+  why: 403; latest archive is May 2026
+- url: https://www.nejm.org/about-nejm/editorial-policies
+  for: NEJM Group
+  why: 403; latest readable archive is Jul 2026
+- url: https://link.springer.com/brands/bmc/editorial-policies
+  for: BMC / Genome Biology
+  why: JavaScript bot check
+- url: https://amia.org/education-events/amia-2026-annual-symposium/call-participation
+  for: AMIA Symposium
+  why: Cloudflare challenge
+- url: https://amia.secure-platform.com/amplify
+  for: AMIA Amplify 2027
+  why: Login required (401)
+- url: https://www.acm.org/publications/policies/new-acm-policy-on-authorship
+  for: ACM
+  why: Bot check; latest archive is May 2026
+- url: https://academic.oup.com/jamia/pages/General_Instructions
+  for: JAMIA
+  why: 403 to scripts; only summarised fetches worked
+- url: https://academic.oup.com/bib/pages/General_Instructions
+  for: Briefings in Bioinformatics
+  why: 403 to scripts; only truncated fetches worked
+- url: https://genome.cshlp.org/ifora_Artificial
+  for: Genome Research
+  why: 429 / login wall
